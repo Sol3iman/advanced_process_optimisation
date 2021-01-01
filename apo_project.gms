@@ -57,8 +57,10 @@ Variables
  f2(m)  'Pitzer term 3'
  z  'objective variable';
 
+*Default lower bound for integer variables is already 0. 
 Integer variable
  N(i) 'Number of group i';
+
  
 Binary variables
  y(k,i) 'binary';
