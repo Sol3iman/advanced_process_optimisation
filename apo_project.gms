@@ -102,11 +102,11 @@ Equations
 
 *Structural constraints
  totalgroups  'constraint on total number of groups'
- maxgroup 'limits number of each group'
+*maxgroup 'limits number of each group'
  valency  'check on valency'
  minbonds 'minimum bonds allowed'
- maxbonds 'max bonds allowed'
- nextjoin 'disallows adjacent group double bonding';
+ maxbonds 'max bonds allowed';
+*nextjoin 'disallows adjacent group double bonding';
 
 *integer cuts
 *number of each group as binary combination
@@ -141,8 +141,7 @@ Equations
 *Vapour Pressure
  Pvcorr(m).. Pv(m) =e= Pc* exp(f0(m)+ W*f1(m) + (W**2)*f2(m));
 
-*Objective
- obj.. z=e= Cp/Hv272;
+ obj.. z =e= Cp/Hv272;
 
 *Physical constraints - PV(272) and PV(316) are NOT defined 
  Pv_con272.. Pv_272 =G= 1.1;
@@ -159,9 +158,8 @@ Equations
  valency..  sum(i,(2-thermodynamics(i,'Val'))*N(i))=e= 2;
  minbonds.. sum(i,N(i)*thermodynamics(i,'Val'))=G= 2*(sum(i,N(i))-1);
  maxbonds.. sum(i,N(i)*thermodynamics(i,'Val'))=L= (sum(i, N(i)))*(sum(i,N(i))-1);
- nextjoin.. N(i)*(thermodynamics(i, 'Val')-1) + 2 - sum(i, N(i)) =L= 0;
+*nextjoin.. N(i)*(thermodynamics(i, 'Val')-1) + 2 - sum(i, N(i)) =L= 0;
 
 *Solving
 Model molecule /all/;
-
-Solve molecule using minlp BARON minimizing z;
+Solve molecule using minlp minimizing z;
