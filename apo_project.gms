@@ -72,7 +72,7 @@ Integer variable
 
 
 Binary variables
- y(k,i) 'binary';
+ y(k,i) 'binary variable for the number of groups used';
 
 * set lower bounds to ensure non-zero denominators (avoid division by 0 error)
 Tc.lo     = 0.0001;
