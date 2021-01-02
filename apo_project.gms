@@ -5,6 +5,9 @@ Sets
  j column labels /Tmi, Tbi, Tci, Pci, Hvi, Cpi, Val, Nmax/
  k 'number index' /1*3/;
 *removed set m and included equations for 272 and 316 for all equations using m
+*alternate set for groups
+Alias (i, g);
+
 Parameters
  Tm0 'Melting point constant [K]' /147.45/
  Tb0 'Boiling point constant [K]' /222.543/
@@ -115,8 +118,8 @@ Equations
  maxgroup(i) 'limits number of each group'
  valency  'check on valency'
  minbonds 'minimum bonds allowed'
- maxbonds 'max bonds allowed';
-*nextjoin 'disallows adjacent group double bonding';
+ maxbonds 'max bonds allowed'
+ nextjoin(i) 'disallows adjacent group double bonding';
 
 *integer cuts
 *number of each group as binary combination
@@ -174,7 +177,7 @@ Equations
  valency..  sum(i,(2-thermodynamics(i,'Val'))*N(i))=e= 2;
  minbonds.. sum(i,N(i)*thermodynamics(i,'Val'))=G= 2*(sum(i,N(i))-1);
  maxbonds.. sum(i,N(i)*thermodynamics(i,'Val'))=L= (sum(i, N(i)))*(sum(i,N(i))-1);
-*nextjoin.. N(i)*(thermodynamics(i, 'Val')-1) + 2 - sum(i, N(i)) =L= 0;
+ nextjoin(i).. N(i)*(thermodynamics(i, 'Val')-1) + 2 - sum(g, N(g)) =L= 0;
 
 *Solving
 Model molecule /all/;
