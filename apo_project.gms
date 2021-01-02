@@ -115,6 +115,7 @@ Equations
 
 *Structural constraints
  totalgroups  'constraint on total number of groups'
+ totalmin  'minimum number of total groups'  
  maxgroup(i) 'limits number of each group'
  valency  'check on valency'
  minbonds 'minimum bonds allowed'
@@ -171,6 +172,7 @@ Equations
 
 *Constraints on molecule formation
  totalgroups.. sum(i, N(i))=L= 15;
+ totalmin.. sum(i, N(i))=G= 2;
  maxgroup(i).. N(i) =L= 5;
 
 
