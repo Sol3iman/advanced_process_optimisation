@@ -37,8 +37,10 @@ Display thermodynamics;
 
 Positive Variables
 *Tm 'Melting point [K]'
-*Tb 'Boiling point [K]'
+ Tb 'Boiling point [K]'
+ Tb_sum 'Sum of boiling point contributions'
  Tc 'Critical temperature [K]'
+ Tc_sum 'Sum of critical point contributions'
  Hv298 'heat of vaporisation at 298 K [kJ/mol]'
  Hv272 'heat of vaporisation at 272 K [kJ/mol]'
  Pc 'Critical Pressure [bar]'
@@ -50,7 +52,6 @@ Positive Variables
  Pv_316 'Vapour pressure at 316 K [bar]'
 
 Variables
- Tb 'boiling point'
  W 'acentric factor'
  f0Tbr 'Pitzer term 1 with Tr=Tbr'
  f1Tbr 'Pitzer term 2 with Tr=Tbr'
@@ -62,9 +63,8 @@ Variables
  f0_316  'Pitzer term 1 at 316 K'
  f1_316  'Pitzer term 2 at 316 K'
  f2_316  'Pitzer term 3 at 316 K'
- 
 
- log_test 'log test'
+
  z  'objective variable';
 
 *Default lower bound for integer variables is already 0.
@@ -75,10 +75,22 @@ Integer variable
 Binary variables
  y(k,i) 'binary';
 
+* set lower bounds to ensure non-zero denominators
+Tc.lo = 0.0001;
+Tb.lo = 0.0001;
+Tbr.lo = 0.0001;
+Tr_272.lo = 0.0001;
+Tr_316.lo = 0.0001;
+Pc.lo = 0.0001;
+Hv272.lo = 0.0001;
+
+
 Equations
  Num(i) 'Number of each group'
 *Tmelt  'Melting point'
+ Tboil_sum  'Boiling point contributions'
  Tboil  'Boiling point'
+ Tcrit_sum  'Critical temperature contributions'
  Tcrit  'Critical temperature'
  Hvap298 'heat of vaporisation at 298 K'
  Cpsum  'heat capacity'
@@ -119,13 +131,13 @@ Equations
 
 *Structural constraints
  totalgroups  'constraint on total number of groups'
- totalmin  'minimum number of total groups'  
+ totalmin  'minimum number of total groups'
  maxgroup(i) 'limits number of each group'
  valency  'check on valency'
  minbonds 'minimum bonds allowed'
  maxbonds 'max bonds allowed'
- nextjoin(i) 'disallows adjacent group double bonding'
- test 'log test';
+ nextjoin(i) 'disallows adjacent group double bonding';
+
 
 *integer cuts
 *number of each group as binary combination
@@ -133,10 +145,11 @@ Equations
 
 *Calculating Parameters
 *Tmelt..  Tm =e= Tm0*log(sum(i, N(i)*thermodynamics(i, 'Tmi')));
- Tboil..  Tb =e= Tb0*log(sum(i, N(i)*thermodynamics(i, 'Tbi')));
- Tcrit..  Tc =e= Tc0*log(sum(i, N(i)*thermodynamics(i, 'Tci')));
+ Tboil_sum..  Tb_sum =e= sum(i, N(i)*thermodynamics(i, 'Tbi'));
+ Tboil..  Tb =e= Tb0*log(Tb_sum + 0.0001);
+ Tcrit_sum..  Tc_sum =e= sum(i, N(i)*thermodynamics(i, 'Tci'));
+ Tcrit..  Tc =e= Tc0*log(Tc_sum + 0.0001);
  Hvap298.. Hv298 =e= Hv0 + sum(i, N(i)*thermodynamics(i, 'Hvi'));
- test..    log_test =e= log(Hv298);
  Cpsum.. Cp =e= sum(i, N(i)*thermodynamics(i, 'Cpi'));
  Pcsum.. Pc =e= Pc01 +(Pc02 + sum(i, N(i)*thermodynamics(i, 'Pci')))**(-2);
 
@@ -161,7 +174,7 @@ Equations
 *Acentric factor
  f0TbAW.. f0Tbr =e= (-5.97616*(1-Tbr)+1.29874*(1-Tbr)**1.5 -0.60394*(1-Tbr)**2.5 -1.06841*(1-Tbr)**5)/ Tbr;
  f1TbAW.. f1Tbr =e= (-5.03365*(1-Tbr)+1.11505*(1-Tbr)**1.5 -5.41217*(1-Tbr)**2.5 -7.46628*(1-Tbr)**5)/ Tbr;
- Ace.. W =e= -(log(Pc/1.01325)+ f0Tbr)/f1Tbr ;
+ Ace.. W =e= -(log(Pc/1.01325)+ f0Tbr)/(f1Tbr+0.0001) ;
 
 *Vapour Pressure
  Pvcorr_272.. Pv_272 =e= Pc* exp(f0_272+ W*f1_272 + (W**2)*f2_272);
