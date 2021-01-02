@@ -111,7 +111,7 @@ Equations
 *Pvc 'Vapour pressure constraint at 316 K'
  enthalpy 'enthalpy of vaporisation constraint'
  heatcap  'heat capacity constraint'
- phase  'no-solid constraint'
+*phase  'no-solid constraint'
 
 *Structural constraints
  totalgroups  'constraint on total number of groups'
