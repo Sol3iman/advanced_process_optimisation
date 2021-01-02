@@ -2,7 +2,7 @@
 
 Sets
  i row labels /CH3, CH2, CH, C, CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH, CH3O, CH2O, CHDO, CDO, CH2NH2, CHNH2, CNH2, CH3NH, CH2NH, CHNH, CH3N, CH2N, CH2F, CHF, CF, CHF2, CF2, CF3/
- j column labels /Tmi, Tbi, Tci, Pci, Hvi, Cpi, Val, Nmax/
+ j column labels /Tmi, Tbi, Tci, Pci, Hvi, Cpi, Val/
  k 'number index' /1*3/;
 *removed set m and included equations for 272 and 316 for all equations using m
 *alternate set for groups
@@ -37,7 +37,7 @@ Display thermodynamics;
 
 Positive Variables
 *Tm 'Melting point [K]'
- Tb 'Boiling pouint [K]'
+*Tb 'Boiling point [K]'
  Tc 'Critical temperature [K]'
  Hv298 'heat of vaporisation at 298 K [kJ/mol]'
  Hv272 'heat of vaporisation at 272 K [kJ/mol]'
@@ -50,6 +50,7 @@ Positive Variables
  Pv_316 'Vapour pressure at 316 K [bar]'
 
 Variables
+ Tb 'boiling point'
  W 'acentric factor'
  f0Tbr 'Pitzer term 1 with Tr=Tbr'
  f1Tbr 'Pitzer term 2 with Tr=Tbr'
@@ -61,6 +62,9 @@ Variables
  f0_316  'Pitzer term 1 at 316 K'
  f1_316  'Pitzer term 2 at 316 K'
  f2_316  'Pitzer term 3 at 316 K'
+ 
+
+ log_test 'log test'
  z  'objective variable';
 
 *Default lower bound for integer variables is already 0.
@@ -120,7 +124,8 @@ Equations
  valency  'check on valency'
  minbonds 'minimum bonds allowed'
  maxbonds 'max bonds allowed'
- nextjoin(i) 'disallows adjacent group double bonding';
+ nextjoin(i) 'disallows adjacent group double bonding'
+ test 'log test';
 
 *integer cuts
 *number of each group as binary combination
@@ -131,6 +136,7 @@ Equations
  Tboil..  Tb =e= Tb0*log(sum(i, N(i)*thermodynamics(i, 'Tbi')));
  Tcrit..  Tc =e= Tc0*log(sum(i, N(i)*thermodynamics(i, 'Tci')));
  Hvap298.. Hv298 =e= Hv0 + sum(i, N(i)*thermodynamics(i, 'Hvi'));
+ test..    log_test =e= log(Hv298);
  Cpsum.. Cp =e= sum(i, N(i)*thermodynamics(i, 'Cpi'));
  Pcsum.. Pc =e= Pc01 +(Pc02 + sum(i, N(i)*thermodynamics(i, 'Pci')))**(-2);
 
