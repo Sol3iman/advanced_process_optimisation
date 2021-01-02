@@ -202,4 +202,5 @@ Equations
 
 *Solving
 Model molecule /all/;
+option minlp =baron; 
 Solve molecule using minlp minimizing z;
