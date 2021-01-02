@@ -6,7 +6,7 @@ Sets
  k 'number index' /1*3/
  m 'temperature' /t1, t2/;
 Parameters
- Tm0 'Melting point constant [K]' /147.45/
+*Tm0 'Melting point constant [K]' /147.45/
  Tb0 'Boiling point constant [K]' /222.543/
  Tc0 'critical temperature constant [K]' /231.239/
  Pc01 'critical pressure constant 1 [bar]' /5.9827/
@@ -33,7 +33,7 @@ $GDXIN
 Display thermodynamics;
 
 Positive Variables
- Tm 'Melting point [K]'
+*Tm 'Melting point [K]'
  Tb 'Boiling pouint [K]'
  Tc 'Critical temperature [K]'
  Hv298 'heat of vaporisation at 298 K [kJ/mol]'
@@ -67,7 +67,7 @@ Binary variables
 
 Equations
  Num(i) 'Number of each group'
- Tmelt  'Melting point'
+*Tmelt  'Melting point'
  Tboil  'Boiling point'
  Tcrit  'Critical temperature'
  Hvap298 'heat of vaporisation at 298 K'
@@ -115,7 +115,7 @@ Equations
  Num(i).. N(i)=e= sum(k, (2**x(k))*y(k,i));
 
 *Calculating Parameters
- Tmelt..  Tm =e= Tm0*log(sum(i, N(i)*thermodynamics(i, 'Tmi')));
+*Tmelt..  Tm =e= Tm0*log(sum(i, N(i)*thermodynamics(i, 'Tmi')));
  Tboil..  Tb =e= Tb0*log(sum(i, N(i)*thermodynamics(i, 'Tbi')));
  Tcrit..  Tc =e= Tc0*log(sum(i, N(i)*thermodynamics(i, 'Tci')));
  Hvap298.. Hv298 =e= Hv0 + sum(i, N(i)*thermodynamics(i, 'Hvi'));
@@ -150,7 +150,7 @@ Equations
  Pv_con316.. Pv_316 =L= 14;
  enthalpy.. Hv272 =G= 20.33;
  heatcap.. Cp =L= 143.9;
- phase.. Tm =L= 272;
+*phase.. Tm =L= 272;
 
 *Constraints on molecule formation
  totalgroups.. sum(i, N(i))=L= 15;
