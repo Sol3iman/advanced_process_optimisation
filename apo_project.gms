@@ -1,7 +1,7 @@
 *title APO Refrigerant Optimisation
 
 Sets
- i row labels /CH3, CH2, CH, C, CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH, CH3O, CH2O, CHDO, CDO, CH2NH2, CHNH2, CNH2, CH3NH, CH2NH, CHNH, CH3N, CH2N, CH2F, CHF, CF, CHF2, CF2, CF3/
+ i row labels /CH3, CH2, CH, C, CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH, CH3O, CH2O, CH-O, C-O, CH2NH2, CHNH2, CNH2, CH3NH, CH2NH, CHNH, CH3N, CH2N, CH2F, CHF, CF, CHF2, CF2, CF3/
  j column labels /Tmi, Tbi, Tci, Pci, Hvi, Cpi, Val/
  k 'number index' /1*3/;
 *removed set m and included equations for 272 and 316 for all equations using m
@@ -31,7 +31,7 @@ $GDXIN apo_project.gdx
 $LOAD  thermodynamics
 $GDXIN
 
-* Show the table of thermodynamic data 
+* Show the table of thermodynamic data
 Display thermodynamics;
 
 Positive Variables
@@ -86,6 +86,9 @@ Tm.lo     = 0.0001;
 
 Equations
  Num(i)    'Number of each group'
+* INTEGER CUTS
+ Cut1  'Removing fumaraldehyde'
+
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
  Tboil_sum 'Boiling point contributions'
@@ -138,10 +141,11 @@ Equations
  maxbonds 'max bonds allowed'
  nextjoin(i) 'disallows adjacent group double bonding';
 
-
-*INTEGER CUTS 
 *number of each group as binary combination
  Num(i)..     N(i)=e= sum(k, (2**x(k))*y(k,i));
+
+*INTEGER CUTS
+* Cut1.. (y('1', 'CHDCH')+y('2', 'CHDO')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CHDCH')+y('2', 'CHDO'))) =L= 1;
 
 *Calculating Parameters
  Tmelt_sum..  Tm_sum =e= sum(i, N(i)*thermodynamics(i, 'Tmi'));
@@ -203,5 +207,5 @@ Equations
 
 *Solving
 Model molecule /all/;
-option minlp = baron; 
+option minlp = baron;
 Solve molecule using minlp minimizing z;
