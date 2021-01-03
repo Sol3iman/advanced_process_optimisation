@@ -1,7 +1,7 @@
 *title APO Refrigerant Optimisation
 
 Sets
- i row labels /CH3, CH2, CH, C, CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH, CH3O, CH2O, CH-O, C-O, CH2NH2, CHNH2, CNH2, CH3NH, CH2NH, CHNH, CH3N, CH2N, CH2F, CHF, CF, CHF2, CF2, CF3/
+ i row labels /CH3, CH2, CH, C, CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH, CH3O, CH2O, CH-O, C-O, CH2NH2, CHNH2, CNH2, CH3NH, CH2NH, CHNH, CH3N, CH2N, CH2F, CHF, CF, CHF2, CF2, CF3, OH, COOH, CH3CO, CH2CO, CHCO, CHO, CH3COO, CH2COO, CHCOO, HCOO, CH2CN, CHCN, CCN, CONH2, CONCH32, CH2SH, CHSH, CSH, CH3S, CH2S/
  j column labels /Tmi, Tbi, Tci, Pci, Hvi, Cpi, Val/
  k 'number index' /1*3/;
 *removed set m and included equations for 272 and 316 for all equations using m
@@ -26,7 +26,7 @@ Parameters
  thermodynamics(i,j);
 
 $onUNDF
-$Call GDXXRW apo_project.xlsx trace=3 par=thermodynamics rng=Sheet2!A1:H31 rdim=1 cdim=1
+$Call GDXXRW apo_project.xlsx trace=3 par=thermodynamics rng=Sheet2!A1:H51 rdim=1 cdim=1
 $GDXIN apo_project.gdx
 $LOAD  thermodynamics
 $GDXIN
@@ -87,7 +87,7 @@ Tm.lo     = 0.0001;
 Equations
  Num(i)    'Number of each group'
 * INTEGER CUTS
- Cut1  'Removing fumaraldehyde'
+*Cut1  'Removing fumaraldehyde'
 
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
