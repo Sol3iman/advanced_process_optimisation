@@ -26,7 +26,7 @@ Parameters
  thermodynamics(i,j);
 
 $onUNDF
-$Call GDXXRW apo_project.xlsx trace=3 par=thermodynamics rng=Sheet2!A1:H51 rdim=1 cdim=1
+$Call GDXXRW apo_project.xlsx trace=3 par=thermodynamics rng=Sheet2!A1:H45 rdim=1 cdim=1
 $GDXIN apo_project.gdx
 $LOAD  thermodynamics
 $GDXIN
