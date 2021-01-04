@@ -87,7 +87,7 @@ Tm.lo     = 0.0001;
 Equations
  Num(i)    'Number of each group'
 * INTEGER CUTS
-*Cut1  'Removing fumaraldehyde'
+ Cut1  'Removing dimethylamine'
 
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
@@ -145,7 +145,7 @@ Equations
  Num(i)..     N(i)=e= sum(k, (2**x(k))*y(k,i));
 
 *INTEGER CUTS
-* Cut1.. (y('1', 'CHDCH')+y('2', 'CHDO')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CHDCH')+y('2', 'CHDO'))) =L= 1;
+ Cut1.. (y('1', 'CH3') + y('1', 'CH3NH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH3NH'))) =L= 1;
 
 *Calculating Parameters
  Tmelt_sum..  Tm_sum =e= sum(i, N(i)*thermodynamics(i, 'Tmi'));
