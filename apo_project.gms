@@ -89,7 +89,9 @@ Equations
 * INTEGER CUTS
  Cut1  'Removing dimethylamine'
  Cut2 'Removing methyl ether'
- 
+ Cut3 'Removing methoxy ethene'
+  
+
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
  Tboil_sum 'Boiling point contributions'
@@ -148,7 +150,8 @@ Equations
 *INTEGER CUTS
  Cut1.. (y('1', 'CH3') + y('1', 'CH3NH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH3NH'))) =L= 1;
  Cut2.. (y('1', 'CH2DCH') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH2DCH') + y('1', 'CH3O'))) =L= 1;
-
+ Cut3.. (y('2', 'CH3') + y('1', 'CH2O')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2O'))) =L= 1;
+ 
 *Calculating Parameters
  Tmelt_sum..  Tm_sum =e= sum(i, N(i)*thermodynamics(i, 'Tmi'));
  Tmelt..      Tm =e= Tm0*log(Tm_sum + 0.0001);
