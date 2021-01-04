@@ -92,6 +92,8 @@ Equations
  Cut3 'Removing methyl ethyl ether'
  Cut4 'Removing but-1,3-diene'
  Cut5 'Removing but-2-ene' 
+ Cut6 'Removing methyl ethyl ether v2'
+
 
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
@@ -154,6 +156,8 @@ Equations
  Cut3.. (y('2', 'CH3') + y('1', 'CH2O')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2O'))) =L= 1;
  Cut4.. (y('2', 'CH2DCH')) - (sum(i, sum(k, y(k,i)))- (y('2', 'CH2DCH'))) =L= 0; 
  Cut5.. (y('2', 'CH3') + y('1', 'CHDCH')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CHDCH'))) =L= 1;
+ Cut6.. (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O'))) =L= 2;
+
 *Calculating Parameters
  Tmelt_sum..  Tm_sum =e= sum(i, N(i)*thermodynamics(i, 'Tmi'));
  Tmelt..      Tm =e= Tm0*log(Tm_sum + 0.0001);
