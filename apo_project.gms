@@ -86,6 +86,7 @@ Tm.lo     = 0.0001;
 
 Equations
  Num(i)    'Number of each group'
+ 
 * INTEGER CUTS
  Cut1 'Removing dimethylamine'
  Cut2 'Removing methoxy ethene'
@@ -94,6 +95,9 @@ Equations
  Cut5 'Removing but-2-ene' 
  Cut6 'Removing methyl ethyl ether v2'
  Cut7 'Removing but-1-ene'
+ Cut8 'Removing trimethylamine'
+ 
+
 
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
@@ -158,7 +162,7 @@ Equations
  Cut5.. (y('2', 'CH3') + y('1', 'CHDCH')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CHDCH'))) =L= 1;
  Cut6.. (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O'))) =L= 2;
  Cut7.. (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH'))) =L= 2;
-
+ Cut8.. (y('2', 'CH3') + y('1', 'CH3N')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH3N'))) =L= 1;
 
 *Calculating Parameters
  Tmelt_sum..  Tm_sum =e= sum(i, N(i)*thermodynamics(i, 'Tmi'));
