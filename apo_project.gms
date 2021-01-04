@@ -97,7 +97,7 @@ Equations
  Cut7 'Removing but-1-ene'
  Cut8 'Removing trimethylamine'
  Cut9 'Removing methylpropene'
-
+ Cut10 'Removing butane'
 
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
@@ -164,7 +164,7 @@ Equations
  Cut7.. (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH'))) =L= 2;
  Cut8.. (y('2', 'CH3') + y('1', 'CH3N')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH3N'))) =L= 1;
  Cut9.. (y('2', 'CH3') + y('1', 'CH2DC')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2DC'))) =L= 1;
-
+ Cut10.. (y('2', 'CH3') + y('2', 'CH2')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('2', 'CH2'))) =L= 1;
 
 *Calculating Parameters
  Tmelt_sum..  Tm_sum =e= sum(i, N(i)*thermodynamics(i, 'Tmi'));
