@@ -3,7 +3,9 @@
 Sets
  i row labels /CH3, CH2, CH, C, CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH, CH3O, CH2O, CH-O, C-O, CH2NH2, CHNH2, CNH2, CH3NH, CH2NH, CHNH, CH3N, CH2N, OH, COOH, CH3CO, CH2CO, CHCO, CHO, CH3COO, CH2COO, CHCOO, HCOO, CH2CN, CHCN, CCN, CONH2, CONCH32, CH2SH, CHSH, CSH, CH3S, CH2S,CH2F, CHF, CF, CHF2, CF2, CF3/
  j column labels /Tmi, Tbi, Tci, Pci, Hvi, Cpi, Val/
- k 'number index' /1*3/;
+ k number index /1*3/
+ F(i) fluorine-containing groups /CH2F, CHF, CF, CHF2, CF2, CF3/
+ O(i) groups with C=C bond /CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH/;
 *removed set m and included equations for 272 and 316 for all equations using m
 *alternate set for groups
 Alias (i, g);
@@ -64,6 +66,7 @@ Variables
  f1_316  'Pitzer term 2 at 316 K'
  f2_316  'Pitzer term 3 at 316 K'
 
+
  z  'objective variable';
 
 *Default lower bound for integer variables is already 0.
@@ -72,7 +75,9 @@ Integer variable
 
 
 Binary variables
- y(k,i) 'binary variable for the number of groups used';
+ y(k,i)   'binary variable for the number of groups used'
+ Fluorine 'Is 1 if fluorine containing group present in molecule'
+ Olefin   'Is 1 if C=C group present in molecule';
 
 * set lower bounds to ensure non-zero denominators (avoid division by 0 error)
 Tc.lo     = 0.0001;
@@ -86,18 +91,18 @@ Tm.lo     = 0.0001;
 
 Equations
  Num(i)    'Number of each group'
- 
+
 * INTEGER CUTS
- Cut1  'Removing dimethylamine'
- Cut2  'Removing methoxy ethene'
- Cut3  'Removing methyl ethyl ether'
- Cut4  'Removing but-1,3-diene'
- Cut5  'Removing but-2-ene' 
- Cut6  'Removing methyl ethyl ether v2'
- Cut7  'Removing but-1-ene'
- Cut8  'Removing trimethylamine'
-*Cut9  'Removing methylpropene'
-*Cut10 'Removing butane'
+* Cut1  'Removing dimethylamine'
+* Cut2  'Removing methoxy ethene'
+* Cut3  'Removing methyl ethyl ether'
+* Cut4  'Removing but-1,3-diene'
+* Cut5  'Removing but-2-ene'
+* Cut6  'Removing methyl ethyl ether v2'
+* Cut7  'Removing but-1-ene'
+* Cut8  'Removing trimethylamine'
+* Cut9  'Removing methylpropene'
+* Cut10 'Removing butane'
 
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
@@ -133,6 +138,10 @@ Equations
 *objective
  obj 'objective function'
 
+* Group types
+ HFC 'Is fluorine included in molecule'
+ DoubleBond 'Is there a C=C bond'
+
 *Process/physical constraints
  Pv_con272 'Vapour pressure constraint at 272 K'
  Pv_con316 'Vapour pressure constraint at 316 K'
@@ -146,6 +155,7 @@ Equations
  totalgroups  'constraint on total number of groups'
  totalmin     'minimum number of total groups'
  maxgroup(i)  'limits number of each group'
+ noHFC        'only permits Fluorine in HFOs'
  valency      'check on valency'
  minbonds     'minimum bonds allowed'
  maxbonds     'max bonds allowed'
@@ -155,14 +165,14 @@ Equations
  Num(i)..     N(i)=e= sum(k, (2**x(k))*y(k,i));
 
 *INTEGER CUTS
- Cut1..  (y('1', 'CH3') + y('1', 'CH3NH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH3NH'))) =L= 1;
- Cut2..  (y('1', 'CH2DCH') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH2DCH') + y('1', 'CH3O'))) =L= 1;
- Cut3..  (y('2', 'CH3') + y('1', 'CH2O')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2O'))) =L= 1;
- Cut4..  (y('2', 'CH2DCH')) - (sum(i, sum(k, y(k,i)))- (y('2', 'CH2DCH'))) =L= 0; 
- Cut5..  (y('2', 'CH3') + y('1', 'CHDCH')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CHDCH'))) =L= 1;
- Cut6..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O'))) =L= 2;
- Cut7..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH'))) =L= 2;
- Cut8..  (y('2', 'CH3') + y('1', 'CH3N')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH3N'))) =L= 1;
+* Cut1..  (y('1', 'CH3') + y('1', 'CH3NH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH3NH'))) =L= 1;
+* Cut2..  (y('1', 'CH2DCH') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH2DCH') + y('1', 'CH3O'))) =L= 1;
+* Cut3..  (y('2', 'CH3') + y('1', 'CH2O')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2O'))) =L= 1;
+* Cut4..  (y('2', 'CH2DCH')) - (sum(i, sum(k, y(k,i)))- (y('2', 'CH2DCH'))) =L= 0;
+* Cut5..  (y('2', 'CH3') + y('1', 'CHDCH')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CHDCH'))) =L= 1;
+* Cut6..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O'))) =L= 2;
+* Cut7..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH'))) =L= 2;
+* Cut8..  (y('2', 'CH3') + y('1', 'CH3N')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH3N'))) =L= 1;
 *Cut9..  (y('2', 'CH3') + y('1', 'CH2DC')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2DC'))) =L= 1;
 *Cut10.. (y('2', 'CH3') + y('2', 'CH2')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('2', 'CH2'))) =L= 1;
 
@@ -206,6 +216,9 @@ Equations
 
  obj..        z =e= Cp/Hv272;
 
+ HFC.. Fluorine =e= min(sum(F(i),N(i)),1);
+ DoubleBond.. Olefin =e= min(sum(O(i),N(i)),1);
+
 *Physical constraints - PV(272) and PV(316) are NOT defined
  Pv_con272.. Pv_272 =G= 1.1;
  Pv_con316.. Pv_316 =L= 14;
@@ -218,6 +231,7 @@ Equations
  totalmin..    sum(i, N(i))=G= 2;
  maxgroup(i).. N(i) =L= 5;
 
+ noHFC .. Fluorine =L= Olefin;
 
  valency..  sum(i,(2-thermodynamics(i,'Val'))*N(i))=e= 2;
  minbonds.. sum(i,N(i)*thermodynamics(i,'Val'))=G= 2*(sum(i,N(i))-1);
