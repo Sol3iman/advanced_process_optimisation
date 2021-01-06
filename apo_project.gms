@@ -75,9 +75,7 @@ Integer variable
 
 
 Binary variables
- y(k,i)   'binary variable for the number of groups used'
- Fluorine 'Is 1 if fluorine containing group present in molecule'
- Olefin   'Is 1 if C=C group present in molecule';
+ y(k,i)   'binary variable for the number of groups used';
 
 * set lower bounds to ensure non-zero denominators (avoid division by 0 error)
 Tc.lo     = 0.0001;
@@ -137,10 +135,6 @@ Equations
 
 *objective
  obj 'objective function'
-
-* Group types
- HFC 'Is fluorine included in molecule'
- DoubleBond 'Is there a C=C bond'
 
 *Process/physical constraints
  Pv_con272 'Vapour pressure constraint at 272 K'
@@ -216,9 +210,6 @@ Equations
 
  obj..        z =e= Cp/Hv272;
 
- HFC.. Fluorine =e= min(sum(F(i),N(i)),1);
- DoubleBond.. Olefin =e= min(sum(O(i),N(i)),1);
-
 *Physical constraints - PV(272) and PV(316) are NOT defined
  Pv_con272.. Pv_272 =G= 1.1;
  Pv_con316.. Pv_316 =L= 14;
@@ -231,7 +222,7 @@ Equations
  totalmin..    sum(i, N(i))=G= 2;
  maxgroup(i).. N(i) =L= 5;
 
- noHFC .. Fluorine =L= Olefin;
+ noHFC .. sum(F(i),N(i)) =L= 15*sum(O(i),N(i));
 
  valency..  sum(i,(2-thermodynamics(i,'Val'))*N(i))=e= 2;
  minbonds.. sum(i,N(i)*thermodynamics(i,'Val'))=G= 2*(sum(i,N(i))-1);
