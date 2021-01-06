@@ -1,7 +1,7 @@
 *title APO Refrigerant Optimisation
 
 Sets
- i row labels /CH3, CH2, CH, C, CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH, CH3O, CH2O, CH-O, C-O, CH2NH2, CHNH2, CNH2, CH3NH, CH2NH, CHNH, CH3N, CH2N, OH, COOH, CH3CO, CH2CO, CHCO, CHO, CH3COO, CH2COO, CHCOO, HCOO, CH2CN, CHCN, CCN, CONH2, CONCH32, CH2SH, CHSH, CSH, CH3S, CH2S/
+ i row labels /CH3, CH2, CH, C, CH2DCH, CHDCH, CH2DC, CHDC, CDC, CH2DCDCH, CH2DCDC, CHDCDCH, CH3O, CH2O, CH-O, C-O, CH2NH2, CHNH2, CNH2, CH3NH, CH2NH, CHNH, CH3N, CH2N, OH, COOH, CH3CO, CH2CO, CHCO, CHO, CH3COO, CH2COO, CHCOO, HCOO, CH2CN, CHCN, CCN, CONH2, CONCH32, CH2SH, CHSH, CSH, CH3S, CH2S,CH2F, CHF, CF, CHF2, CF2, CF3/
  j column labels /Tmi, Tbi, Tci, Pci, Hvi, Cpi, Val/
  k 'number index' /1*3/;
 *removed set m and included equations for 272 and 316 for all equations using m
@@ -26,7 +26,7 @@ Parameters
  thermodynamics(i,j);
 
 $onUNDF
-$Call GDXXRW apo_project.xlsx trace=3 par=thermodynamics rng=Sheet2!A1:H45 rdim=1 cdim=1
+$Call GDXXRW apo_project.xlsx trace=3 par=thermodynamics rng=Sheet2!A1:H51 rdim=1 cdim=1
 $GDXIN apo_project.gdx
 $LOAD  thermodynamics
 $GDXIN
@@ -88,16 +88,16 @@ Equations
  Num(i)    'Number of each group'
  
 * INTEGER CUTS
- Cut1 'Removing dimethylamine'
- Cut2 'Removing methoxy ethene'
- Cut3 'Removing methyl ethyl ether'
- Cut4 'Removing but-1,3-diene'
- Cut5 'Removing but-2-ene' 
- Cut6 'Removing methyl ethyl ether v2'
- Cut7 'Removing but-1-ene'
- Cut8 'Removing trimethylamine'
- Cut9 'Removing methylpropene'
- Cut10 'Removing butane'
+ Cut1  'Removing dimethylamine'
+ Cut2  'Removing methoxy ethene'
+ Cut3  'Removing methyl ethyl ether'
+ Cut4  'Removing but-1,3-diene'
+ Cut5  'Removing but-2-ene' 
+ Cut6  'Removing methyl ethyl ether v2'
+ Cut7  'Removing but-1-ene'
+ Cut8  'Removing trimethylamine'
+*Cut9  'Removing methylpropene'
+*Cut10 'Removing butane'
 
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
@@ -144,27 +144,27 @@ Equations
 
 *Structural constraints
  totalgroups  'constraint on total number of groups'
- totalmin  'minimum number of total groups'
- maxgroup(i) 'limits number of each group'
- valency  'check on valency'
- minbonds 'minimum bonds allowed'
- maxbonds 'max bonds allowed'
- nextjoin(i) 'disallows adjacent group double bonding';
+ totalmin     'minimum number of total groups'
+ maxgroup(i)  'limits number of each group'
+ valency      'check on valency'
+ minbonds     'minimum bonds allowed'
+ maxbonds     'max bonds allowed'
+ nextjoin(i)  'disallows adjacent group double bonding';
 
 *number of each group as binary combination
  Num(i)..     N(i)=e= sum(k, (2**x(k))*y(k,i));
 
 *INTEGER CUTS
- Cut1.. (y('1', 'CH3') + y('1', 'CH3NH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH3NH'))) =L= 1;
- Cut2.. (y('1', 'CH2DCH') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH2DCH') + y('1', 'CH3O'))) =L= 1;
- Cut3.. (y('2', 'CH3') + y('1', 'CH2O')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2O'))) =L= 1;
- Cut4.. (y('2', 'CH2DCH')) - (sum(i, sum(k, y(k,i)))- (y('2', 'CH2DCH'))) =L= 0; 
- Cut5.. (y('2', 'CH3') + y('1', 'CHDCH')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CHDCH'))) =L= 1;
- Cut6.. (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O'))) =L= 2;
- Cut7.. (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH'))) =L= 2;
- Cut8.. (y('2', 'CH3') + y('1', 'CH3N')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH3N'))) =L= 1;
- Cut9.. (y('2', 'CH3') + y('1', 'CH2DC')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2DC'))) =L= 1;
- Cut10.. (y('2', 'CH3') + y('2', 'CH2')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('2', 'CH2'))) =L= 1;
+ Cut1..  (y('1', 'CH3') + y('1', 'CH3NH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH3NH'))) =L= 1;
+ Cut2..  (y('1', 'CH2DCH') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH2DCH') + y('1', 'CH3O'))) =L= 1;
+ Cut3..  (y('2', 'CH3') + y('1', 'CH2O')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2O'))) =L= 1;
+ Cut4..  (y('2', 'CH2DCH')) - (sum(i, sum(k, y(k,i)))- (y('2', 'CH2DCH'))) =L= 0; 
+ Cut5..  (y('2', 'CH3') + y('1', 'CHDCH')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CHDCH'))) =L= 1;
+ Cut6..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O'))) =L= 2;
+ Cut7..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH'))) =L= 2;
+ Cut8..  (y('2', 'CH3') + y('1', 'CH3N')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH3N'))) =L= 1;
+*Cut9..  (y('2', 'CH3') + y('1', 'CH2DC')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2DC'))) =L= 1;
+*Cut10.. (y('2', 'CH3') + y('2', 'CH2')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('2', 'CH2'))) =L= 1;
 
 *Calculating Parameters
  Tmelt_sum..  Tm_sum =e= sum(i, N(i)*thermodynamics(i, 'Tmi'));
