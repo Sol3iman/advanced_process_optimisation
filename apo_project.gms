@@ -91,16 +91,16 @@ Equations
  Num(i)    'Number of each group'
 
 * INTEGER CUTS
-* Cut1  'Removing dimethylamine'
-* Cut2  'Removing methoxy ethene'
-* Cut3  'Removing methyl ethyl ether'
-* Cut4  'Removing but-1,3-diene'
-* Cut5  'Removing but-2-ene'
-* Cut6  'Removing methyl ethyl ether v2'
-* Cut7  'Removing but-1-ene'
-* Cut8  'Removing trimethylamine'
-* Cut9  'Removing methylpropene'
-* Cut10 'Removing butane'
+ Cut1  'Removing 3-fluoropropene'
+ Cut2  'Removing dimethylamine'
+ Cut3  'Removing methoxy ethene'
+ Cut4  'Removing 3,3,3-trifluoropropene'
+ Cut5  'Removing methyl ethyl ether'
+ Cut6  'Removing but-1,3-diene'
+ Cut7  'Removing but-2-ene'
+ Cut8  'Removing methyl ethyl ether v2'
+ Cut9  'Removing but-1-ene'
+ Cut10  'Removing trimethylamine'
 
  Tmelt_sum 'Melting point contribution'
  Tmelt     'Melting point'
@@ -159,16 +159,16 @@ Equations
  Num(i)..     N(i)=e= sum(k, (2**x(k))*y(k,i));
 
 *INTEGER CUTS
-* Cut1..  (y('1', 'CH3') + y('1', 'CH3NH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH3NH'))) =L= 1;
-* Cut2..  (y('1', 'CH2DCH') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH2DCH') + y('1', 'CH3O'))) =L= 1;
-* Cut3..  (y('2', 'CH3') + y('1', 'CH2O')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2O'))) =L= 1;
-* Cut4..  (y('2', 'CH2DCH')) - (sum(i, sum(k, y(k,i)))- (y('2', 'CH2DCH'))) =L= 0;
-* Cut5..  (y('2', 'CH3') + y('1', 'CHDCH')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CHDCH'))) =L= 1;
-* Cut6..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O'))) =L= 2;
-* Cut7..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH'))) =L= 2;
-* Cut8..  (y('2', 'CH3') + y('1', 'CH3N')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH3N'))) =L= 1;
-*Cut9..  (y('2', 'CH3') + y('1', 'CH2DC')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2DC'))) =L= 1;
-*Cut10.. (y('2', 'CH3') + y('2', 'CH2')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('2', 'CH2'))) =L= 1;
+ Cut1..  (y('1', 'CH2F') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH2F') + y('1', 'CH2DCH'))) =L= 1;
+ Cut2..  (y('1', 'CH3') + y('1', 'CH3NH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH3NH'))) =L= 1;
+ Cut3..  (y('1', 'CH2DCH') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH2DCH') + y('1', 'CH3O'))) =L= 1;
+ Cut4..  (y('1', 'CF3') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CF3') + y('1', 'CH2DCH'))) =L= 1;
+ Cut5..  (y('2', 'CH3') + y('1', 'CH2O')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH2O'))) =L= 1;
+ Cut6..  (y('2', 'CH2DCH')) - (sum(i, sum(k, y(k,i)))- (y('2', 'CH2DCH'))) =L= 0;
+ Cut7..  (y('2', 'CH3') + y('1', 'CHDCH')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CHDCH'))) =L= 1;
+ Cut8..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH3O'))) =L= 2;
+ Cut9..  (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH')) - (sum(i,sum(k, y(k,i)))- (y('1', 'CH3') + y('1', 'CH2') + y('1', 'CH2DCH'))) =L= 2;
+ Cut10..  (y('2', 'CH3') + y('1', 'CH3N')) - (sum(i,sum(k, y(k,i)))- (y('2', 'CH3') + y('1', 'CH3N'))) =L= 1;
 
 *Calculating Parameters
  Tmelt_sum..  Tm_sum =e= sum(i, N(i)*thermodynamics(i, 'Tmi'));
@@ -222,7 +222,7 @@ Equations
  totalmin..    sum(i, N(i))=G= 2;
  maxgroup(i).. N(i) =L= 5;
 
- noHFC .. sum(F(i),N(i)) =L= 15*sum(O(i),N(i));
+ noHFC.. sum(F(i),N(i)) =L= 15*sum(O(i),N(i));
 
  valency..  sum(i,(2-thermodynamics(i,'Val'))*N(i))=e= 2;
  minbonds.. sum(i,N(i)*thermodynamics(i,'Val'))=G= 2*(sum(i,N(i))-1);
@@ -233,3 +233,4 @@ Equations
 Model molecule /all/;
 option minlp = baron;
 Solve molecule using minlp minimizing z;
+
